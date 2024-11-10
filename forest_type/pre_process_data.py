@@ -142,8 +142,8 @@ def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
             
 def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost=False):
     
-    X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
-    y = train_set['Cover_Type']  # Target variable
+    X = train.drop(columns=['Cover_Type'])  # Drop the target variable
+    y = train['Cover_Type']  # Target variable
     
     # Initialize the RandomOverSampler with the specified sampling strategy
     ros = RandomOverSampler(sampling_strategy={1: 36410, 2: 48676, 3: 10000, 4: 1000, 5: 2500, 6: 5000, 7: 6000})
@@ -167,8 +167,8 @@ def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost
         train the model, and the testing data is used to evaluate it.
         """
        
-        X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
-        y = train_set['Cover_Type']  # Target variable
+        X = train.drop(columns=['Cover_Type'])  # Drop the target variable
+        y = train['Cover_Type']  # Target variable
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
         
@@ -183,8 +183,8 @@ def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost
         """
         
         # Define features and target
-        X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
-        y = train_set['Cover_Type']  # Target variable
+        X = train.drop(columns=['Cover_Type'])  # Drop the target variable
+        y = train['Cover_Type']  # Target variable
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
 
