@@ -140,7 +140,7 @@ def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
     
     return train_set, test_set
             
-def get_splitted_train_test_data_original(train_set, data_basic=False, data_for_XBG_Boost=False):
+def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost=False):
     
     X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
     y = train_set['Cover_Type']  # Target variable
