@@ -14,7 +14,7 @@ We tackled each problem independently as follows:
 
 - **Data Analysis**: We began by analyzing the dataset to identify significant variables and made necessary modifications to obtain an optimal dataset for model training.
 - **Model Training**: We trained three models on the prepared data.
-- **Results and Perspectives**: Finally, we discussed the results and provided perspectives for potential improvements.
+- **Results**: Finally, we discussed the results and provided perspectives for potential improvements.
 
 ## Methodology  
 The methodology for both tasks involves:
