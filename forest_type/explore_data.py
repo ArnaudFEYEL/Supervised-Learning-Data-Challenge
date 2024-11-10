@@ -114,6 +114,46 @@ def data_set_study(check_corr_matrix=False,
         
     if check_box_plot == True :
         
+        # Count plot for Cover_Type
+        plt.figure(figsize=(10, 6))
+        sns.countplot(data=train, x='Cover_Type')
+        plt.title('Cover Type Distribution')
+        plt.xlabel('Cover Type')
+        plt.ylabel('Count')
+        plt.savefig(f"{PATH_Plots}/cover_type_countplot.jpg", format="jpeg")
+        plt.close()
+        
+        # Wilderness_Area distribution by Cover_Type
+        wilderness_cols = [col for col in train.columns if 'Wilderness_Area' in col]
+        wilderness_melted = train.melt(id_vars=['Cover_Type'],
+                                       value_vars=wilderness_cols,
+                                       var_name='Wilderness_Area',
+                                       value_name='Presence')
+        wilderness_present = wilderness_melted[wilderness_melted['Presence'] == 1]
+
+        plt.figure(figsize=(12, 6))
+        sns.countplot(x='Wilderness_Area', hue='Cover_Type', data=wilderness_present)
+        plt.title('Wilderness Area vs Forest Cover Type')
+        plt.xticks(rotation=45)
+        plt.legend(title='Cover Type')
+        plt.tight_layout()
+        plt.savefig(f"{PATH_Plots}/wilderness_area_vs_cover_type.jpeg")
+        plt.close()
+
+        # Soil_Type distribution by Cover_Type
+        soil_type_cols = [col for col in train.columns if 'Soil_Type' in col]
+        soil_cover_type = train.groupby('Cover_Type')[soil_type_cols].sum().T
+
+        plt.figure(figsize=(15, 10))
+        soil_cover_type.plot(kind='bar', stacked=True, figsize=(15, 8), colormap='Set1')
+        plt.title('Distribution of Cover_Type across Soil_Type', fontsize=16)
+        plt.xlabel('Soil_Type', fontsize=12)
+        plt.ylabel('Count of Cover_Type', fontsize=12)
+        plt.legend(title="Cover_Type", bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.tight_layout()
+        plt.savefig(f"{PATH_Plots}/soil_type_vs_cover_type.jpeg")
+        plt.close()
+        
         # Adjust color palette to match the number of unique Cover_Type values
         num_categories = train['Cover_Type'].nunique()
         cmap = sns.color_palette("Set1", num_categories)
