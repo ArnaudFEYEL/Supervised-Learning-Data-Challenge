@@ -26,30 +26,30 @@ import os
 from pre_process_data import pre_processing_train_data, get_splitted_train_test_data
 from explore_data import drop_missing_values
 
-#Creating a new respository to store new dfs
+# Creating a new respository to store new dfs
 PATH_DFs = './new_dfs'
 if not os.path.exists(PATH_DFs):
     os.makedirs(PATH_DFs)
 
-#Creating a new respository to save models results
+# Creating a new respository to save models results
 PATH_train_models = './models'
 if not os.path.exists(PATH_train_models):
     os.makedirs(PATH_train_models)
 
-#Creating a new respository to save study plots 
+# Creating a new respository to save study plots 
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
     
-#Import train and test data
+# Import train and test data
 test = pd.read_csv('test.csv', index_col=0)
 train = pd.read_csv('train.csv', index_col=0)
 print("Data Imported !")
 
-#Setting seed for reproductibility
+# Setting seed for reproductibility
 seed = 42
 
-#Pre processing data   
+# Pre processing data   
 drop_missing_values(train, drop=True)
 train, test = pre_processing_train_data(train, test, PATH_DFs, PATH_Plots)
 
@@ -260,8 +260,12 @@ def train_model(train_data, svm_one_vs_rest=False, basic_RF=False, xgb_RF=False,
         return stacking_model
 
     if voting == True :
-        # Load and split your data (add actual data loading and splitting logic here)
-        X_train, X_test, y_train, y_test = get_splitted_train_test_data(train_data, data_basic=True, data_for_XBG_Boost=True)
+        """
+        This section trains a VotingClassifier using a combination of base classifiers (SVM, RF, XGBoost) 
+        with soft voting to aggregate predictions.
+        """
+        # Split data 
+        X_train, X_test, y_train, y_test = get_splitted_train_test_data(train_data, data_basic=True, data_for_XBG_Boost=False)
         y_train = y_train - 1  # Adjust for XGBoost
         # Base learners for voting classifier
         base_learners = [
@@ -306,7 +310,7 @@ def train_model(train_data, svm_one_vs_rest=False, basic_RF=False, xgb_RF=False,
 
 def make_test_prediction(svm_one_vs_rest=False, basic_RF=False, xgb_RF=False, stacking=False, voting=False):
     """
-    This function is used to make predictions on the test dataset using different trained models (SVM One-vs-Rest, Random Forest, or XGBoost).
+    This function is used to make predictions on the test dataset using different trained models (SVM One-vs-Rest, Random Forest, XGBoost, Stacking or Voting Model).
     Based on the input flags, it selects the corresponding model, makes predictions, adjusts the predicted values if necessary, 
     and then saves the predictions to a CSV file for submission.
     
