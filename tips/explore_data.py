@@ -20,8 +20,8 @@ if not os.path.exists(PATH_DFs):
     os.makedirs(PATH_DFs)
     
 # Import train and test data
-test = pd.read_csv('./test.csv', index_col=0)
-train = pd.read_csv('./train.csv', index_col=0)
+test = pd.read_parquet('./test.parquet')
+train = pd.read_parquet('./train.parquet')
 print("Data Imported !")
 
 # Setting seed for reproductibility
