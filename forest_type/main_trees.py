@@ -469,5 +469,5 @@ if __name__ == "__main__":
                          basic_RF=False, 
                          xgb_RF=False, 
                          stacking=False, 
-                         voting=True)
+                         voting=False)
     
