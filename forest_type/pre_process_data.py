@@ -23,22 +23,22 @@ from xgboost import XGBClassifier
 import os
 
 
-#Creating a new respository to store new dfs
+# Creating a new respository to store new dfs
 PATH_DFs = './new_dfs'
 if not os.path.exists(PATH_DFs):
     os.makedirs(PATH_DFs)
 
-#Creating a new respository to save models results
+# Creating a new respository to save models results
 PATH_train_models = './models'
 if not os.path.exists(PATH_train_models):
     os.makedirs(PATH_train_models)
 
-#Creating a new respository to save study plots 
+# Creating a new respository to save study plots 
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
 
-#Setting seed for reproductibility
+# Setting seed for reproductibility
 seed = 42
     
 def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
@@ -85,7 +85,7 @@ def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
         # Transform the test data using the same transformer (do not fit on test data)
         test_data.iloc[:, :9] = pt.transform(test_data.iloc[:, :9])
 
-    # Assuming 'train' and 'test' are your train and test datasets
+    # Apply Yeo-Johnson transformation
     transform_yeo_johnson(train_set, test_set)
 
     # Check skewness after transformation
