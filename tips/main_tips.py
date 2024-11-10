@@ -37,29 +37,29 @@ import os
 
 
 
-#Creating a new respository to save study plots 
+# Creating a new respository to save study plots 
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
 
-#Creating a new respository to store new dfs
+# Creating a new respository to store new dfs
 PATH_DFs = './new_dfs'
 if not os.path.exists(PATH_DFs):
     os.makedirs(PATH_DFs)
 
-#Creating a new respository to save models results
+# Creating a new respository to save models results
 PATH_train_models = './models'
 if not os.path.exists(PATH_train_models):
     os.makedirs(PATH_train_models)
     
 
-#Import train and test data
+# Import train and test data
 test = pd.read_parquet('/home/arnaud/M2_IA/App_Sup/tips/nyc-taxis-tips/test.parquet')
 train = pd.read_parquet('/home/arnaud/M2_IA/App_Sup/tips/nyc-taxis-tips/train.parquet')
 
 print("Data Imported !")
 
-#Setting seed for reproductibility
+# Setting seed for reproductibility
 seed = 42
 
 train, test = pre_process_data(train, test, PATH_DFs, transform_scale=True)
@@ -83,7 +83,7 @@ def train_model(bayesian_R=False, basic_RF=False, xgb_RF=False, stacking_model=F
         """
 
         model = BayesianRidge(
-                        max_iter=10000,           # Number of iterations, adjust for complexity
+                        max_iter=10000,       # Number of iterations, adjust for complexity
                         tol=1e-4,             # Tolerance for convergence
                         alpha_1=1e-6,         # Hyperparameters for prior over the alpha parameter
                         alpha_2=1e-8,         # Can be tuned based on data complexity
@@ -211,7 +211,12 @@ def train_model(bayesian_R=False, basic_RF=False, xgb_RF=False, stacking_model=F
         return xgb_model
     
     if stacking_model == True:
-        
+        """
+        This section trains a Stacking Regressor with a combination of base models (Bayesian Ridge, XGBoost, Random Forest)
+        and a meta-model (Random Forest) for final predictions. It splits the data into training and testing sets,
+        fits the model to the training data, makes predictions, and evaluates the model using mean squared error,
+        R² scores, and cross-validation. The results are saved to a text file.
+        """
         # Initialize base models
         model_bayesian_ridge = BayesianRidge(max_iter=10000, 
                                              tol=1e-4, 
@@ -263,7 +268,13 @@ def train_model(bayesian_R=False, basic_RF=False, xgb_RF=False, stacking_model=F
         return stacking_reg
     
     if neuron_network == True :
-        
+        """
+        This section trains a neural network model with multiple layers using dropout and batch normalization for 
+        regularization. It splits the data into training and testing sets, compiles the model with mean squared error 
+        as the loss function, and sets up callbacks for early stopping and best model checkpointing.
+        The model is trained and evaluated on mean squared error and R² scores. Additionally, the training curve is 
+        saved as a plot, and the results are saved to a text file.
+        """
         model = models.Sequential([
             layers.Dense(32, activation="tanh", input_shape=(X_train.shape[1],)),  # Input layer with 16 units
             layers.Dropout(0.3),  # Dropout layer to prevent overfitting
@@ -446,7 +457,12 @@ def make_test_prediction(bayesian_R=False,
 
     # Stacking Regressor model
     if stacking_model == True :
-        
+
+        """
+        Trains and uses the Stacking Regressor model to make predictions on the test dataset.
+        The predictions are saved to a CSV file named 'Stacking_model_submission.csv' for submission.
+        """
+     
         trained_model = train_model(bayesian_R=False, 
                                     basic_RF=False, 
                                     xgb_RF=False, 
@@ -462,7 +478,12 @@ def make_test_prediction(bayesian_R=False,
         print("Predictions saved toStacking_model_submission.csv")
 
     if neuron_network == True :
-        
+     
+        """
+        Trains and uses the Neural Network model to make predictions on the test dataset.
+        The predictions are saved to a CSV file named 'Neuron_network_model_submission.csv' for submission.
+        """
+     
         trained_model = train_model(bayesian_R=False, 
                                     basic_RF=False, 
                                     xgb_RF=False, 
