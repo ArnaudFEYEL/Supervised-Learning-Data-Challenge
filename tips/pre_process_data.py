@@ -40,7 +40,7 @@ PATH_train_models = './models'
 if not os.path.exists(PATH_train_models):
     os.makedirs(PATH_train_models)
 
-def pre_process_data_original(data_train, data_test, df_path, transform_scale=False):
+def pre_process_data(data_train, data_test, df_path, transform_scale=False):
     """
     This function preprocesses the training and test datasets by extracting datetime features,
     adding bank holiday flags, handling missing values, and applying scaling transformations if required.
