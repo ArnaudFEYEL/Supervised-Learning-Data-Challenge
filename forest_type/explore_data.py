@@ -9,21 +9,21 @@ import seaborn as sns
 # File handling
 import os
 
-#Creating a new respository to save study plots 
+# Creating a new respository to save study plots 
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
     
-#Import train and test data
+# Import train and test data
 test = pd.read_csv('./test.csv', index_col=0)
 train = pd.read_csv('./train.csv', index_col=0)
 print("Data Imported !")
 
-#Using abs values for negative values
+# Using abs values for negative values
 train['Vertical_Distance_To_Hydrology'] = abs(train['Vertical_Distance_To_Hydrology'])
 test['Vertical_Distance_To_Hydrology'] = abs(test['Vertical_Distance_To_Hydrology'])
 
-#Setting seed for reproductibility
+# Setting seed for reproductibility
 seed = 42
 
 def check_duplicates(check=False):
@@ -65,7 +65,6 @@ def data_set_study(check_corr_matrix=False,
     Parameters:
     - check_corr_matrix: Boolean to check and plot the correlation matrix of selected variables.
     - check_box_plot: Boolean to create boxplots for continuous variables grouped by 'Cover_Type'.
-    - check_occurence_binary_variable: Boolean to analyze and plot the occurrence of binary soil types for each cover type.
     - check_histogram_continuous_variables: Boolean to plot histograms of continuous variables for train and test datasets.
     """
     
