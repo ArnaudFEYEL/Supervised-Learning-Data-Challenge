@@ -37,12 +37,6 @@ if not os.path.exists(PATH_train_models):
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
-    
-#Import train and test data
-
-# test = pd.read_csv('test.csv', index_col=0)
-# train = pd.read_csv('train.csv', index_col=0)
-# print("Data Imported !")
 
 #Setting seed for reproductibility
 seed = 42
@@ -146,61 +140,7 @@ def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
     
     return train_set, test_set
             
-# def get_splitted_train_test_data_original(train_set, data_basic=False, data_for_XBG_Boost=False):
-    
-#     X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
-#     y = train_set['Cover_Type']  # Target variable
-    
-#     # Initialize the RandomOverSampler with the specified sampling strategy
-#     ros = RandomOverSampler(sampling_strategy={1: 36410, 2: 48676, 3: 10000, 4: 1000, 5: 2500, 6: 5000, 7: 6000})
-        
-#     # Apply upsampling to the features and target
-#     X_resampled, y_resampled = ros.fit_resample(X, y)
-        
-#     # Create a new balanced DataFrame
-#     train_balanced = pd.DataFrame(X_resampled, columns=X.columns)
-#     train_balanced['Cover_Type'] = y_resampled
-
-#     # Update train 
-#     train = train_balanced
-
-#     if data_basic == True:
-        
-#         """
-#         This section handles the basic data split by defining the features (X) and the target (y).
-#         Features (X) are obtained by dropping the 'Cover_Type' column, and the target variable (y) is 'Cover_Type'.
-#         The data is split into training and testing sets with an 80-20 split, where the training data is used to 
-#         train the model, and the testing data is used to evaluate it.
-#         """
-       
-#         X = train.drop(columns=['Cover_Type'])  # Drop the target variable
-#         y = train['Cover_Type']  # Target variable
-
-#         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
-        
-#         return X_train, X_test, y_train, y_test 
-        
-#     if data_for_XBG_Boost == True:
-#         """
-#         This section prepares the data for XGBoost by defining the features (X) and the target (y).
-#         The target variable (y) is adjusted by subtracting 1 from all class labels, which is required 
-#         for XGBoost's classification.
-#         The data is split into training and testing sets, and the target variable is modified for use with XGBoost.
-#         """
-        
-#         # Define features and target
-#         X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
-#         y = train_set['Cover_Type']  # Target variable
-
-#         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
-
-#         # Adjust the target variable for XGBClassifier (subtract 1 from all class labels)
-#         y_train_xgb = y_train - 1  # Subtract 1 from all class labels
-#         y_test_xgb = y_test - 1  # Same adjustment for the test set
-        
-#         return X_train, X_test, y_train_xgb, y_test_xgb    
-    
-def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost=False):
+def get_splitted_train_test_data_original(train_set, data_basic=False, data_for_XBG_Boost=False):
     
     X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
     y = train_set['Cover_Type']  # Target variable
@@ -215,31 +155,42 @@ def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost
     train_balanced = pd.DataFrame(X_resampled, columns=X.columns)
     train_balanced['Cover_Type'] = y_resampled
 
-    # Limit to only 10 rows for training data
-    train_balanced = train_balanced.sample(n=1000, random_state=seed)
-
     # Update train 
     train = train_balanced
 
-    if data_basic:
-        # Basic data split for general use
+    if data_basic == True:
+        
+        """
+        This section handles the basic data split by defining the features (X) and the target (y).
+        Features (X) are obtained by dropping the 'Cover_Type' column, and the target variable (y) is 'Cover_Type'.
+        The data is split into training and testing sets with an 80-20 split, where the training data is used to 
+        train the model, and the testing data is used to evaluate it.
+        """
+       
         X = train.drop(columns=['Cover_Type'])  # Drop the target variable
         y = train['Cover_Type']  # Target variable
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
         
         return X_train, X_test, y_train, y_test 
         
-    if data_for_XBG_Boost:
-        # Data preparation for XGBoost specifically
-        X = train.drop(columns=['Cover_Type'])  # Drop the target variable
-        y = train['Cover_Type']  # Target variable
+    if data_for_XBG_Boost == True:
+        """
+        This section prepares the data for XGBoost by defining the features (X) and the target (y).
+        The target variable (y) is adjusted by subtracting 1 from all class labels, which is required 
+        for XGBoost's classification.
+        The data is split into training and testing sets, and the target variable is modified for use with XGBoost.
+        """
+        
+        # Define features and target
+        X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
+        y = train_set['Cover_Type']  # Target variable
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
 
         # Adjust the target variable for XGBClassifier (subtract 1 from all class labels)
         y_train_xgb = y_train - 1  # Subtract 1 from all class labels
         y_test_xgb = y_test - 1  # Same adjustment for the test set
         
-        return X_train, X_test, y_train_xgb, y_test_xgb 
+        return X_train, X_test, y_train_xgb, y_test_xgb    
     

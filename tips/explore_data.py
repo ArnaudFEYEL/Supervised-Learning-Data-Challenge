@@ -13,15 +13,16 @@ import os
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
+
+#Creating a new respository to store new dfs
+PATH_DFs = './new_dfs'
+if not os.path.exists(PATH_DFs):
+    os.makedirs(PATH_DFs)
     
 #Import train and test data
 test = pd.read_csv('./test.csv', index_col=0)
 train = pd.read_csv('./train.csv', index_col=0)
 print("Data Imported !")
-
-#Using abs values for negative values
-train['Vertical_Distance_To_Hydrology'] = abs(train['Vertical_Distance_To_Hydrology'])
-test['Vertical_Distance_To_Hydrology'] = abs(test['Vertical_Distance_To_Hydrology'])
 
 #Setting seed for reproductibility
 seed = 42
@@ -52,10 +53,10 @@ def drop_missing_values(data, drop=False):
         
         # Drop rows with any missing values
         data.dropna(inplace=True)
-
+        
 def data_set_study(check_corr_matrix=False, 
-                   check_box_plot=False, 
-                   check_histogram_continuous_variables=False):
+                   check_box_plot=False,
+                   check_histogram=False):
     """
     This function provides various analyses and visualizations on the dataset, 
     including correlation matrix, boxplots, occurrence of binary variables, 
@@ -68,16 +69,13 @@ def data_set_study(check_corr_matrix=False,
     - check_occurence_binary_variable: Boolean to analyze and plot the occurrence of binary soil types for each cover type.
     - check_histogram_continuous_variables: Boolean to plot histograms of continuous variables for train and test datasets.
     """
-    
-    # Select relevant continuous variables from the dataset
-    variables = ['Elevation', 'Aspect', 'Slope', 'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Hydrology',
-                'Horizontal_Distance_To_Roadways', 'Horizontal_Distance_To_Fire_Points', 'Hillshade_9am', 
-                'Hillshade_Noon', 'Hillshade_3pm']
         
     if check_corr_matrix == True :
 
+        numerical_cols = train.select_dtypes(include='number').columns.tolist()
+
         # Compute the correlation matrix
-        correlation_matrix = train[variables].corr()
+        correlation_matrix = train[numerical_cols].corr()
 
         # Plot and save the correlation matrix
         plt.figure(figsize=(16, 12))
@@ -110,38 +108,44 @@ def data_set_study(check_corr_matrix=False,
         top_correlations = correlation_pairs.sort_values(by='Absolute Correlation', ascending=False).head(20)
 
         # Save the DataFrame to a CSV file for better readability
-        top_correlations.to_csv(f"{PATH_Plots}/top_abs_correlated_features.csv", index=True)
+        top_correlations.to_csv(f"{PATH_DFs}/top_abs_correlated_features.csv", index=True)
         
     if check_box_plot == True :
+        print()
         
-        # Adjust color palette to match the number of unique Cover_Type values
-        num_categories = train['Cover_Type'].nunique()
-        cmap = sns.color_palette("Set1", num_categories)
+    if check_histogram == True:
+        columns_list = [
+            "VendorID", "passenger_count", "payment_type", 
+            "tip_amount", "tolls_amount", "Distance_meters", "trip_distance_miles"
+        ]
+        
+        for column in columns_list:
+            plt.figure(figsize=(10, 6))  # Set figure size for clarity
 
-        for label in variables:
-            plt.figure(figsize=(plt.gcf().get_size_inches()))
-            sns.boxplot(x='Cover_Type', y=label, data=train, palette=cmap, hue='Cover_Type', dodge=False)
-            plt.legend([], [], frameon=False)  # Remove legend to avoid redundant information
-            plt.savefig(f"{PATH_Plots}/boxplot_{label}.jpeg")
+            # Plot the histogram
+            ax = sns.countplot(x=column, data=train)
+            plt.title(f'Distribution of {column}')
+            
+            # Adjust x-axis labels for large datasets
+            max_value = train[column].max() if train[column].dtype != 'object' else len(train[column].unique())
+            
+            if max_value > 10:  # Assuming "large" dataset if there are more than 10 unique values
+                print(f"For {column}, max value is {max_value}")
+                
+                # Calculate the interval for labels to appear only at quarter positions
+                ticks_interval = max(1, int(max_value) // 4)
+                labels_of_interest = [str(i) for i in range(0, int(max_value) + 1, ticks_interval)]
+                
+                # Get all current tick labels
+                original_labels = [str(label) for label in ax.get_xticks()]
+                # Set labels only for quarters, blank for others
+                new_labels = [label if label in labels_of_interest else "" for label in original_labels]
+                
+                # Apply the new labels to the x-axis
+                ax.set_xticklabels(new_labels)
+                
+            # Save the plot to a file
+            plt.savefig(f"{PATH_Plots}/histogram_{column}.jpeg")
             plt.close()
-        
-    if check_histogram_continuous_variables == True :
-        
-        # Plot histogram for the train dataset and save it as a JPEG
-        train.iloc[:, 0:9].hist(figsize=(10, 8), bins=50)
-        plt.savefig(f"{PATH_Plots}/train_histogram.jpg", format="jpeg")
-        plt.close()
-
-        # Plot histogram for the test dataset and save it as a JPEG
-        test.iloc[:, 0:9].hist(figsize=(10, 8), bins=50)
-        plt.savefig(f"{PATH_Plots}/test_histogram.jpg", format="jpeg")
-        plt.close()
-        
-# Main execution block
-if __name__ == "__main__":
-    # Set your flags or parameters as needed
-    check_duplicates(check=True)  
-    drop_missing_values(train, drop=True) 
-    data_set_study(check_corr_matrix=True, 
-                   check_box_plot=True, 
-                   check_histogram_continuous_variables=True)
+    
+    
