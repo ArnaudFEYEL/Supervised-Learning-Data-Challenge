@@ -171,5 +171,5 @@ def drop_outliers(train_data):
     valid_passenger = (train_data.passenger_count > 0)
     valid_distance = (train_data.trip_distance < 30)
     data_new = train_data[valid_passenger & valid_distance]
-    print(f"outliners are dropped")
+    print(f"outliers are dropped")
     return data_new
