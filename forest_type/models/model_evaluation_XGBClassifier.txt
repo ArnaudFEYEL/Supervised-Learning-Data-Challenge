@@ -1,0 +1,36 @@
+XGB Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.95      0.93      0.94      7282
+           1       0.94      0.96      0.95      9736
+           2       0.97      0.97      0.97      2000
+           3       0.95      0.98      0.97       200
+           4       0.91      0.87      0.89       500
+           5       0.94      0.95      0.95      1000
+           6       0.97      0.98      0.98      1200
+
+    accuracy                           0.95     21918
+   macro avg       0.95      0.95      0.95     21918
+weighted avg       0.95      0.95      0.95     21918
+
+Confusion Matrix:
+[[6738  499    0    0    8    3   34]
+ [ 350 9298   33    0   36   17    2]
+ [   0   17 1943    5    0   35    0]
+ [   0    0    1  197    0    2    0]
+ [   6   50    7    0  437    0    0]
+ [   0   15   27    6    0  952    0]
+ [  19    5    0    0    0    0 1176]]
+
+XGBClassifier:
+Mean Squared Error: 0.24
+R² on Training Set: 1.00
+R² on Test Set: 0.91
+Cross-validation score: 0.9347082216082928
+
+XGBClassifier - Top 5 Feature Importance:
+Soil_Type2: 0.0723
+Soil_Type4: 0.0651
+Soil_Type37: 0.0531
+Soil_Type22: 0.0497
+Soil_Type35: 0.0496
