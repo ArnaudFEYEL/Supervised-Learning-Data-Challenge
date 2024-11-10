@@ -24,7 +24,7 @@ The methodology for both tasks involves:
 - **Evaluation**: Assessing model performance using appropriate metrics such as **R squared** for regression, and **F1-score** for classification tasks.
 - **Optimization**: Tuning hyperparameters using techniques such as **Grid Search** and **Cross-validation**.
 
-Detailed explanations of the methodology, code implementation, and results can be found in the project **report** located within this repository.
+Detailed explanations of the methodology, and results can be found in the project **report** located within this repository.
 
 ## Running the Code  
 To be able to run the code, you need to modify a few lines of the path to the datasets on your local disk in the files in each challenge folder. Also we assume that you already have access to the datasets. 
