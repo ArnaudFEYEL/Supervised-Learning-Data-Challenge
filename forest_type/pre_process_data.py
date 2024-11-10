@@ -142,8 +142,8 @@ def pre_processing_train_data(train_set, test_set, df_PATH, plot_PATH) :
             
 def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost=False):
     
-    X = train.drop(columns=['Cover_Type'])  # Drop the target variable
-    y = train['Cover_Type']  # Target variable
+    X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
+    y = train_set['Cover_Type']  # Target variable
     
     # Initialize the RandomOverSampler with the specified sampling strategy
     ros = RandomOverSampler(sampling_strategy={1: 36410, 2: 48676, 3: 10000, 4: 1000, 5: 2500, 6: 5000, 7: 6000})
