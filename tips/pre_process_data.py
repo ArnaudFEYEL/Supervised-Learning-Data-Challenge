@@ -25,23 +25,27 @@ from sklearn.preprocessing import QuantileTransformer
 # File handling
 import os
 
-#Creating a new respository to save study plots 
+# Creating a new respository to save study plots 
 PATH_Plots = './plots_saved'
 if not os.path.exists(PATH_Plots):
     os.makedirs(PATH_Plots)
 
-#Creating a new respository to store new dfs
+# Creating a new respository to store new dfs
 PATH_DFs = './new_dfs'
 if not os.path.exists(PATH_DFs):
     os.makedirs(PATH_DFs)
 
-#Creating a new respository to save models results
+# Creating a new respository to save models results
 PATH_train_models = './models'
 if not os.path.exists(PATH_train_models):
     os.makedirs(PATH_train_models)
 
 def pre_process_data_original(data_train, data_test, df_path, transform_scale=False):
-
+    """
+    This function preprocesses the training and test datasets by extracting datetime features,
+    adding bank holiday flags, handling missing values, and applying scaling transformations if required.
+    """
+ 
     data_train = pd.get_dummies(data_train, columns=["store_and_fwd_flag"], prefix="store_and_fwd", drop_first=True)
     data_test = pd.get_dummies(data_test, columns=["store_and_fwd_flag"], prefix="store_and_fwd", drop_first=True)
         
@@ -161,6 +165,9 @@ def pre_process_data_original(data_train, data_test, df_path, transform_scale=Fa
 
     
 def drop_outliers(train_data):
+    """
+    This function removes rows from the training data, which are considered as outliers.
+    """
     valid_passenger = (train_data.passenger_count > 0)
     valid_distance = (train_data.trip_distance < 30)
     data_new = train_data[valid_passenger & valid_distance]
