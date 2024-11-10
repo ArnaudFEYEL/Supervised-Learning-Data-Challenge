@@ -167,8 +167,8 @@ def get_splitted_train_test_data(train_set, data_basic=False, data_for_XBG_Boost
         train the model, and the testing data is used to evaluate it.
         """
        
-        X = train.drop(columns=['Cover_Type'])  # Drop the target variable
-        y = train['Cover_Type']  # Target variable
+        X = train_set.drop(columns=['Cover_Type'])  # Drop the target variable
+        y = train_set['Cover_Type']  # Target variable
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed,stratify=y)
         
