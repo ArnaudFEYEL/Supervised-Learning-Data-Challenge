@@ -88,7 +88,7 @@ def train_model(train_data, svm_one_vs_rest=False, basic_RF=False, xgb_RF=False,
         # Save the results to a text file
         lr_filename = "model_evaluation_SVM_One_Vs_Rest.txt"
         with open(f"{PATH_train_models}/{lr_filename}", "w") as file:
-            file.write(f"Logistic Regression Classification Report:\n{lr_classification_rep}\n")
+            file.write(f"SVM One Vs Rest Classification Report:\n{lr_classification_rep}\n")
             file.write(f"Confusion Matrix:\n{lr_confusion_mat}\n\n")
             file.write(f"LogisticRegression:\n")
             file.write(f'Mean Squared Error: {lr_mse:.2f}\n')
