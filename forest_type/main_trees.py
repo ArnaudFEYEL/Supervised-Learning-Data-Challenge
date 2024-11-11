@@ -2,18 +2,12 @@
 import numpy as np
 import pandas as pd
 
-# Plotting and visualization
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 # Scikit-learn models and utilities
-from imblearn.over_sampling import RandomOverSampler
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier, StackingClassifier, VotingClassifier
 from sklearn.svm import SVC
 from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import classification_report, confusion_matrix, r2_score, mean_squared_error
-from sklearn.preprocessing import PowerTransformer, MinMaxScaler
 from sklearn.multiclass import OneVsRestClassifier
 
 # XGBoost 
