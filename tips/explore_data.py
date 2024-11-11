@@ -110,6 +110,7 @@ def data_set_study(check_corr_matrix=False,
         top_correlations.to_csv(f"{PATH_DFs}/top_abs_correlated_features.csv", index=True)
         
     if check_box_plot == True :
+        
         # RatecodeID Box Plot
         plt.figure(figsize=(10, 6))
         sns.boxplot(x='RatecodeID', y='tip_amount', data=train)
@@ -119,22 +120,15 @@ def data_set_study(check_corr_matrix=False,
         plt.savefig(f"{PATH_Plots}/ratecode_boxplot.jpeg")
         plt.close()
         
-        # Payment Type Bar Plot
-        plt.figure(figsize=(10, 6))
-        payment_counts = train[train['tip_amount'] > 0].groupby('payment_type').size()
-        plt.bar(payment_counts.index, payment_counts.values)
-        plt.xlabel('Payment Type of tip amount > 0', fontsize=18)
-        plt.ylabel('Number of Trips', fontsize=18)
-        plt.title("Number of Trips by Payment Type")
-        plt.xticks(fontsize=12)
-        plt.yticks(fontsize=12)
-        plt.savefig(f"{PATH_Plots}/Payment_Type_Distribution.jpeg")
-        plt.close()
+        plot_box_sns = sns.countplot(x='payment_type', data=train)
+        plot_box_sns.set_title('Distribution of Payment Type', fontsize=18)
+        fig = plot_box_sns.get_figure()
+        fig.savefig(f"{PATH_Plots}/Payment_Type_Distribution.jpeg", format='jpeg') 
                 
     if check_histogram == True:
         columns_list = [
             "VendorID", "passenger_count", "payment_type", 
-            "tip_amount", "tolls_amount", "trip_distance_miles"
+            "tip_amount", "trip_distance_miles"
         ]
         
         for column in columns_list:
