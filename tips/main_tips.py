@@ -17,11 +17,8 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.gaussian_process.kernels import ConstantKernel as C
 from sklearn.linear_model import BayesianRidge, ElasticNet
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import  MinMaxScaler
-from sklearn.preprocessing import QuantileTransformer
 from sklearn.ensemble import StackingRegressor
 from sklearn.linear_model import BayesianRidge
 from keras import models, layers, optimizers, callbacks
