@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.gaussian_process.kernels import ConstantKernel as C
-from sklearn.linear_model import BayesianRidge
+from sklearn.linear_model import BayesianRidge, ElasticNet
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import  MinMaxScaler
 from sklearn.preprocessing import QuantileTransformer
@@ -29,7 +29,10 @@ from keras import models, layers, optimizers, callbacks
 # XGBoost
 from xgboost import XGBRegressor
 
-#Import custom local code
+# lightgbm
+from lightgbm import LGBMRegressor
+
+# Import custom local code
 from pre_process_data import pre_process_data, drop_outliers
 
 # File handling
@@ -229,21 +232,29 @@ def train_model(bayesian_R=False, basic_RF=False, xgb_RF=False, stacking_model=F
         model_rf = RandomForestRegressor(n_estimators=150, 
                                          max_depth=20, 
                                          random_state=seed)
+     
         model_xgb = XGBRegressor(n_estimators=50, 
                                  max_depth=4, 
                                  eval_metric='rmse', 
                                  random_state=seed)
+     
+        model_lgbm = LGBMRegressor(n_estimators=50, 
+                                   max_depth=4, 
+                                   random_state=seed)
+     
+        model_elastic_net = ElasticNet(alpha=0.1, 
+                                       l1_ratio=0.5, 
+                                       random_state=seed)
 
         # Stacking Regressor with Random Forest as the meta-estimator
         stacking_reg = StackingRegressor(
             estimators=[('bayesian_ridge', model_bayesian_ridge), 
                         ('xgb', model_xgb), 
-                        ('random_forest', model_rf)],
-            final_estimator=RandomForestRegressor(n_estimators=50, 
-                                                  max_depth=5, 
-                                                  random_state=seed)
+                        ('random_forest', model_rf),
+                        ('lightgbm', model_lgbm),
+                        ('elastic_net', model_elastic_net)],
+            final_estimator=RandomForestRegressor(n_estimators=50, max_depth=5, random_state=seed)
         )
-
         print(f"Training stacking model")
         stacking_reg.fit(X_train, y_train)
         
