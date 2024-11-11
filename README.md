@@ -42,7 +42,8 @@ Here’s the list of Python libraries required to run the code:
 - `numpy`  
 - `seaborn`  
 - `matplotlib`  
-- `xgboost`  
+- `xgboost`
+- `lightgbm`
 - `scikit-learn`  
 - `keras`  
 - `os`  
@@ -50,7 +51,7 @@ Here’s the list of Python libraries required to run the code:
 Ensure that all the necessary libraries are installed in your Python environment before running the code. You can install them using `pip`:
 
 ```bash
-pip install pandas numpy seaborn matplotlib xgboost scikit-learn keras
+pip install pandas numpy seaborn matplotlib xgboost scikit-learn keras lightgbm
 ```
 
 ## Authors  
