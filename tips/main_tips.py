@@ -54,8 +54,8 @@ if not os.path.exists(PATH_train_models):
     
 
 # Import train and test data
-test = pd.read_parquet('/test.parquet')
-train = pd.read_parquet('/home/arnaud/M2_IA/App_Sup/tips/nyc-taxis-tips/train.parquet')
+test = pd.read_parquet('/path/to/your/test.parquet')
+train = pd.read_parquet('/path/to/your/train.parquet')
 
 print("Data Imported !")
 
