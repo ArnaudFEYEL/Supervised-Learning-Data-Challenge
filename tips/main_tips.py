@@ -318,7 +318,7 @@ def train_model(bayesian_R=False, basic_RF=False, xgb_RF=False, stacking_model=F
         history = model.fit(X_train, y_train, batch_size=16, epochs=100, validation_split=0.2, callbacks=callback_list)
 
         # Load best weights and make predictions
-        model.load_weights('/aps_model.weights.h5')
+        model.load_weights(f"{PATH_train_models}/aps_model.weights.h5")
 
         # Plot training curves
         val_loss, train_loss = history.history['val_loss'], history.history['loss']
